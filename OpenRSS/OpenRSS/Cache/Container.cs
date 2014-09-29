@@ -76,8 +76,6 @@ namespace OpenRSS.Cache
         /// <param name="buffer"> The buffer. </param>
         /// <returns> The decompressed container. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static Container decode(java.nio.ByteBuffer buffer) throws java.io.IOException
         public static Container Decode(ByteBuffer buffer)
         {
             /* decode the type and length */
@@ -217,8 +215,6 @@ namespace OpenRSS.Cache
         /// </summary>
         /// <returns> The buffer. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer encode() throws java.io.IOException
         public ByteBuffer Encode()
         {
             var data = GetData(); // so we have a read only view, making this method thread safe

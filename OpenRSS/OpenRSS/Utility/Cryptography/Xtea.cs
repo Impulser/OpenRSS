@@ -7,14 +7,14 @@ using java.nio;
 using java.text;
 using java.util;
 
-namespace net.openrs.util.crypto
+namespace OpenRSS.Utility.Cryptography
 {
     /// <summary>
     ///     An implementation of the XTEA block cipher.
     ///     @author Graham
     ///     @author `Discardedx2
     /// </summary>
-    public sealed class Xtea
+    public static class Xtea
     {
         /// <summary>
         ///     The golden ratio.
@@ -26,11 +26,6 @@ namespace net.openrs.util.crypto
         /// </summary>
         public const int ROUNDS = 32;
 
-        /// <summary>
-        ///     Default private constructor to prevent instantiation.
-        /// </summary>
-        private Xtea()
-        { }
 
         /// <summary>
         ///     Deciphers the specified <seealso cref="ByteBuffer" /> with the given key.
@@ -50,9 +45,9 @@ namespace net.openrs.util.crypto
 
             for (var i = 0; i < buffer.limit(); i += 8)
             {
-                var sum = GOLDEN_RATIO * ROUNDS;
-                int v0 = buffer.getInt(i * 4);
-                int v1 = buffer.getInt(i * 4 + 4);
+                var sum = unchecked(GOLDEN_RATIO * ROUNDS);
+                var v0 = buffer.getInt(i * 4);
+                var v1 = buffer.getInt(i * 4 + 4);
                 for (var j = 0; j < ROUNDS; j++)
                 {
                     v1 = (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + key[(sum >> 11) & 3]);
@@ -83,8 +78,8 @@ namespace net.openrs.util.crypto
             for (var i = 0; i < buffer.limit(); i += 8)
             {
                 var sum = 0;
-                int v0 = buffer.getInt(i * 4);
-                int v1 = buffer.getInt(i * 4 + 4);
+                var v0 = buffer.getInt(i * 4);
+                var v1 = buffer.getInt(i * 4 + 4);
                 for (var j = 0; j < ROUNDS; j++)
                 {
                     v0 = (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + key[sum & 3]);

@@ -5,7 +5,9 @@ using java.nio;
 using java.text;
 using java.util;
 
-namespace net.openrs.cache
+using OpenRSS.Utility;
+
+namespace OpenRSS.Cache
 {
     /// <summary>
     ///     An <seealso cref="Archive" /> is a file within the cache that can have multiple member
@@ -47,7 +49,7 @@ namespace net.openrs.cache
             /* read the sizes of the child entries and individual chunks */
             //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
             //ORIGINAL LINE: int[][] chunkSizes = new int[chunks][size];
-            var chunkSizes = RectangularArrays.ReturnRectangularIntArray(chunks, size);
+            var chunkSizes = ArrayUtilities.ReturnRectangularArray<int>(chunks, size);
             var sizes = new int[size];
             buffer.position(buffer.limit() - 1 - chunks * size * 4);
             for (var chunk = 0; chunk < chunks; chunk++)
@@ -106,8 +108,6 @@ namespace net.openrs.cache
         /// </summary>
         /// <returns> An encoded <seealso cref="ByteBuffer" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer encode() throws java.io.IOException
         public virtual ByteBuffer Encode() // TODO: an implementation that can use more than one chunk
         {
             var bout = new ByteArrayOutputStream();
@@ -150,7 +150,7 @@ namespace net.openrs.cache
                 bout.write(1);
 
                 /* wrap the bytes from the stream in a buffer */
-                byte[] bytes = bout.toByteArray();
+                var bytes = bout.toByteArray();
                 return ByteBuffer.wrap(bytes);
             }
             finally

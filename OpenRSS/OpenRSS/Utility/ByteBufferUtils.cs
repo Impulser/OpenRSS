@@ -6,18 +6,18 @@ using java.text;
 using java.util;
 using java.util.zip;
 
-using net.openrs.util.crypto;
+using OpenRSS.Utility.Cryptography;
 
 using StringBuilder = System.Text.StringBuilder;
 
-namespace net.openrs.util
+namespace OpenRSS.Utility
 {
     /// <summary>
     ///     Contains <seealso cref="ByteBuffer" />-related utility methods.
     ///     @author Graham
     ///     @author `Discardedx2
     /// </summary>
-    public sealed class ByteBufferUtils
+    public static class ByteBufferUtils
     {
         /// <summary>
         ///     The modified set of 'extended ASCII' characters used by the client.
@@ -56,12 +56,6 @@ namespace net.openrs.util
             '\u017E',
             '\u0178'
         };
-
-        /// <summary>
-        ///     Default private constructor to prevent instantiation.
-        /// </summary>
-        private ByteBufferUtils()
-        { }
 
         /// <summary>
         ///     Gets a null-terminated string from the specified buffer, using a
@@ -152,8 +146,8 @@ namespace net.openrs.util
             var builder = new StringBuilder("[");
             for (var i = 0; i < buffer.limit(); i++)
             {
-                string hex = (buffer.get(i) & 0xFF).ToString("x")
-                                                 .ToUpper();
+                var hex = (buffer.get(i) & 0xFF).ToString("x")
+                                                .ToUpper();
                 if (hex.Length == 1)
                 {
                     hex = "0" + hex;

@@ -1,12 +1,3 @@
-using System;
-
-using java.io;
-using java.lang;
-using java.net;
-using java.nio;
-using java.text;
-using java.util;
-
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one or more
  *  contributor license agreements.  See the NOTICE file distributed with
@@ -24,14 +15,21 @@ using java.util;
  *  limitations under the License.
  *
  */
-
 /*
  * This package is based on the work done by Keiron Liddle, Aftex Software
  * <keiron@aftexsw.com> to whom the Ant project is very grateful for his
  * great code.
  */
+using System;
 
-namespace org.apache.tools.bzip2
+using java.io;
+using java.lang;
+using java.net;
+using java.nio;
+using java.text;
+using java.util;
+
+namespace OpenRSS.Utility.Compression.BZip2
 {
     /// <summary>
     ///     An input stream that decompresses from the BZip2 format (without the file
@@ -53,8 +51,6 @@ namespace org.apache.tools.bzip2
     /// </summary>
     public class CBZip2InputStream : InputStream, BZip2Constants
     {
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private static void reportCRCError() throws java.io.IOException
 
         private const int EOF = 0;
 
@@ -151,8 +147,6 @@ namespace org.apache.tools.bzip2
         /// <exception cref="NullPointerException">
         ///     if <tt>in == null</tt>
         /// </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public CBZip2InputStream(final java.io.InputStream in) throws java.io.IOException
         //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
         public CBZip2InputStream(InputStream @in)
         {
@@ -171,11 +165,7 @@ namespace org.apache.tools.bzip2
 
         private void MakeMaps()
         {
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final boolean[] inUse = this.data.inUse;
             var inUse = data.inUse;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] seqToUnseq = this.data.seqToUnseq;
             var seqToUnseq = data.seqToUnseq;
 
             var nInUseShadow = 0;
@@ -190,9 +180,6 @@ namespace org.apache.tools.bzip2
 
             nInUse = nInUseShadow;
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public int read() throws java.io.IOException
         public virtual int Read()
         {
             if (@in != null)
@@ -201,9 +188,6 @@ namespace org.apache.tools.bzip2
             }
             throw new IOException("stream closed");
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public int read(final byte[] dest, final int offs, final int len) throws java.io.IOException
         //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
         public virtual int Read(byte[] dest, int offs, int len)
         {
@@ -223,9 +207,6 @@ namespace org.apache.tools.bzip2
             {
                 throw new IOException("stream closed");
             }
-
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int hi = offs + len;
             var hi = offs + len;
             var destOffs = offs;
             for (int b; (destOffs < hi) && ((b = Read0()) >= 0);)
@@ -235,13 +216,8 @@ namespace org.apache.tools.bzip2
 
             return (destOffs == offs) ? - 1 : (destOffs - offs);
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private int read0() throws java.io.IOException
         private int Read0()
         {
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int retChar = this.currentChar;
             var retChar = currentChar;
 
             switch (currentState)
@@ -280,9 +256,6 @@ namespace org.apache.tools.bzip2
 
             return retChar;
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void init() throws java.io.IOException
         private void Init()
         {
             if (null == @in)
@@ -293,13 +266,13 @@ namespace org.apache.tools.bzip2
             {
                 throw new IOException("Empty InputStream");
             }
-            int magic2 = @in.read();
+            var magic2 = @in.read();
             if (magic2 != 'h')
             {
                 throw new IOException("Stream is not BZip2 formatted: expected 'h'" + " as first byte but got '" + (char) magic2 + "'");
             }
 
-            int blockSize = @in.read();
+            var blockSize = @in.read();
             if ((blockSize < '1') || (blockSize > '9'))
             {
                 throw new IOException("Stream is not BZip2 formatted: illegal " + "blocksize " + (char) blockSize);
@@ -310,9 +283,6 @@ namespace org.apache.tools.bzip2
             InitBlock();
             SetupBlock();
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void initBlock() throws java.io.IOException
         private void InitBlock()
         {
             var magic0 = BsGetUByte();
@@ -352,9 +322,6 @@ namespace org.apache.tools.bzip2
                 currentState = START_BLOCK_STATE;
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void endBlock() throws java.io.IOException
         private void EndBlock()
         {
             computedBlockCRC = crc.GetFinalCRC();
@@ -373,9 +340,6 @@ namespace org.apache.tools.bzip2
             computedCombinedCRC = (computedCombinedCRC << 1) | ((int) ((uint) computedCombinedCRC >> 31));
             computedCombinedCRC ^= computedBlockCRC;
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void complete() throws java.io.IOException
         private void Complete()
         {
             storedCombinedCRC = BsGetInt();
@@ -387,9 +351,6 @@ namespace org.apache.tools.bzip2
                 ReportCRCError();
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void close() throws java.io.IOException
         public virtual void Close()
         {
             var inShadow = @in;
@@ -409,9 +370,6 @@ namespace org.apache.tools.bzip2
                 }
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private int bsR(final int n) throws java.io.IOException
         //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
         private int BsR(int n)
         {
@@ -420,12 +378,10 @@ namespace org.apache.tools.bzip2
 
             if (bsLiveShadow < n)
             {
-                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                //ORIGINAL LINE: final java.io.InputStream inShadow = this.in;
                 var inShadow = @in;
                 do
                 {
-                    int thech = inShadow.read();
+                    var thech = inShadow.read();
 
                     if (thech < 0)
                     {
@@ -443,9 +399,6 @@ namespace org.apache.tools.bzip2
             bsLive = bsLiveShadow - n;
             return (bsBuffShadow >> (bsLiveShadow - n)) & ((1 << n) - 1);
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private boolean bsGetBit() throws java.io.IOException
         private bool BsGetBit()
         {
             var bsLiveShadow = bsLive;
@@ -453,7 +406,7 @@ namespace org.apache.tools.bzip2
 
             if (bsLiveShadow < 1)
             {
-                int thech = @in.read();
+                var thech = @in.read();
 
                 if (thech < 0)
                 {
@@ -468,16 +421,10 @@ namespace org.apache.tools.bzip2
             bsLive = bsLiveShadow - 1;
             return ((bsBuffShadow >> (bsLiveShadow - 1)) & 1) != 0;
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private char bsGetUByte() throws java.io.IOException
         private char BsGetUByte()
         {
             return (char) BsR(8);
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private int bsGetInt() throws java.io.IOException
         private int BsGetInt()
         {
             return (((((BsR(8) << 8) | BsR(8)) << 8) | BsR(8)) << 8) | BsR(8);
@@ -486,8 +433,6 @@ namespace org.apache.tools.bzip2
         /// <summary>
         ///     Called by createHuffmanDecodingTables() exclusively.
         /// </summary>
-        //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
-        //ORIGINAL LINE: private static void hbCreateDecodeTables(final int[] limit, final int[] base, final int[] perm, final char[] length, final int minLen, final int maxLen, final int alphaSize)
         private static void HbCreateDecodeTables(int[] limit, int[] @base, int[] perm, char[] length, int minLen, int maxLen, int alphaSize)
         {
             for (int i = minLen,
@@ -530,8 +475,6 @@ namespace org.apache.tools.bzip2
                  i <= maxLen;
                  i++)
             {
-                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                //ORIGINAL LINE: final int nb = base[i + 1];
                 var nb = @base[i + 1];
                 vec += nb - b;
                 b = nb;
@@ -544,25 +487,12 @@ namespace org.apache.tools.bzip2
                 @base[i] = ((limit[i - 1] + 1) << 1) - @base[i];
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void recvDecodingTables() throws java.io.IOException
         private void RecvDecodingTables()
         {
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final Data dataShadow = this.data;
             var dataShadow = data;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final boolean[] inUse = dataShadow.inUse;
             var inUse = dataShadow.inUse;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] pos = dataShadow.recvDecodingTables_pos;
             var pos = dataShadow.recvDecodingTables_pos;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] selector = dataShadow.selector;
             var selector = dataShadow.selector;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] selectorMtf = dataShadow.selectorMtf;
             var selectorMtf = dataShadow.selectorMtf;
 
             var inUse16 = 0;
@@ -585,8 +515,6 @@ namespace org.apache.tools.bzip2
             {
                 if ((inUse16 & (1 << i)) != 0)
                 {
-                    //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                    //ORIGINAL LINE: final int i16 = i << 4;
                     var i16 = i << 4;
                     for (var j = 0; j < 16; j++)
                     {
@@ -599,16 +527,10 @@ namespace org.apache.tools.bzip2
             }
 
             MakeMaps();
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int alphaSize = this.nInUse + 2;
             var alphaSize = nInUse + 2;
 
             /* Now the selectors */
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int nGroups = bsR(3);
             var nGroups = BsR(3);
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int nSelectors = bsR(15);
             var nSelectors = BsR(15);
 
             for (var i = 0; i < nSelectors; i++)
@@ -630,8 +552,6 @@ namespace org.apache.tools.bzip2
             for (var i = 0; i < nSelectors; i++)
             {
                 var v = selectorMtf[i] & 0xff;
-                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                //ORIGINAL LINE: final byte tmp = pos[v];
                 var tmp = pos[v];
                 while (v > 0)
                 {
@@ -642,17 +562,12 @@ namespace org.apache.tools.bzip2
                 pos[0] = tmp;
                 selector[i] = tmp;
             }
-
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final char[][] len = dataShadow.temp_charArray2d;
             var len = dataShadow.temp_charArray2d;
 
             /* Now the coding tables */
             for (var t = 0; t < nGroups; t++)
             {
                 var curr = BsR(5);
-                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                //ORIGINAL LINE: final char[] len_t = len[t];
                 var len_t = len[t];
                 for (var i = 0; i < alphaSize; i++)
                 {
@@ -671,40 +586,22 @@ namespace org.apache.tools.bzip2
         /// <summary>
         ///     Called by recvDecodingTables() exclusively.
         /// </summary>
-        //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
-        //ORIGINAL LINE: private void createHuffmanDecodingTables(final int alphaSize, final int nGroups)
         private void CreateHuffmanDecodingTables(int alphaSize, int nGroups)
         {
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final Data dataShadow = this.data;
             var dataShadow = data;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final char[][] len = dataShadow.temp_charArray2d;
             var len = dataShadow.temp_charArray2d;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[] minLens = dataShadow.minLens;
             var minLens = dataShadow.minLens;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[][] limit = dataShadow.limit;
             var limit = dataShadow.limit;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[][] base = dataShadow.base;
             var @base = dataShadow.@base;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[][] perm = dataShadow.perm;
             var perm = dataShadow.perm;
 
             for (var t = 0; t < nGroups; t++)
             {
                 var minLen = 32;
                 var maxLen = 0;
-                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                //ORIGINAL LINE: final char[] len_t = len[t];
                 var len_t = len[t];
                 for (var i = alphaSize; --i >= 0;)
                 {
-                    //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                    //ORIGINAL LINE: final char lent = len_t[i];
                     var lent = len_t[i];
                     if (lent > maxLen)
                     {
@@ -719,49 +616,21 @@ namespace org.apache.tools.bzip2
                 minLens[t] = minLen;
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void getAndMoveToFrontDecode() throws java.io.IOException
         private void GetAndMoveToFrontDecode()
         {
             origPtr = BsR(24);
             RecvDecodingTables();
-
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final java.io.InputStream inShadow = this.in;
             var inShadow = @in;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final Data dataShadow = this.data;
             var dataShadow = data;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] ll8 = dataShadow.ll8;
             var ll8 = dataShadow.ll8;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[] unzftab = dataShadow.unzftab;
             var unzftab = dataShadow.unzftab;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] selector = dataShadow.selector;
             var selector = dataShadow.selector;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] seqToUnseq = dataShadow.seqToUnseq;
             var seqToUnseq = dataShadow.seqToUnseq;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final char[] yy = dataShadow.getAndMoveToFrontDecode_yy;
             var yy = dataShadow.getAndMoveToFrontDecode_yy;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[] minLens = dataShadow.minLens;
             var minLens = dataShadow.minLens;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[][] limit = dataShadow.limit;
             var limit = dataShadow.limit;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[][] base = dataShadow.base;
             var @base = dataShadow.@base;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[][] perm = dataShadow.perm;
             var perm = dataShadow.perm;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int limitLast = this.blockSize100k * 100000;
             var limitLast = blockSize100k * 100000;
 
             /*
@@ -778,8 +647,6 @@ namespace org.apache.tools.bzip2
 
             var groupNo = 0;
             var groupPos = BZip2Constants_Fields.G_SIZE - 1;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int eob = this.nInUse + 1;
             var eob = nInUse + 1;
             var nextSym = GetAndMoveToFrontDecode0(0);
             var bsBuffShadow = bsBuff;
@@ -832,9 +699,7 @@ namespace org.apache.tools.bzip2
                         // int zvec = bsR(zn);
                         while (bsLiveShadow < zn)
                         {
-                            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                            //ORIGINAL LINE: final int thech = inShadow.read();
-                            int thech = inShadow.read();
+                            var thech = inShadow.read();
                             if (thech >= 0)
                             {
                                 bsBuffShadow = (bsBuffShadow << 8) | thech;
@@ -850,9 +715,7 @@ namespace org.apache.tools.bzip2
                             zn++;
                             while (bsLiveShadow < 1)
                             {
-                                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                                //ORIGINAL LINE: final int thech = inShadow.read();
-                                int thech = inShadow.read();
+                                var thech = inShadow.read();
                                 if (thech >= 0)
                                 {
                                     bsBuffShadow = (bsBuffShadow << 8) | thech;
@@ -865,9 +728,6 @@ namespace org.apache.tools.bzip2
                         }
                         nextSym = perm_zt[zvec - base_zt[zn]];
                     }
-
-                    //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                    //ORIGINAL LINE: final byte ch = seqToUnseq[yy[0]];
                     var ch = seqToUnseq[yy[0]];
                     unzftab[ch & 0xff] += s + 1;
 
@@ -887,9 +747,6 @@ namespace org.apache.tools.bzip2
                     {
                         throw new IOException("block overrun");
                     }
-
-                    //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                    //ORIGINAL LINE: final char tmp = yy[nextSym - 1];
                     var tmp = yy[nextSym - 1];
                     unzftab[seqToUnseq[tmp] & 0xff]++;
                     ll8[lastShadow] = seqToUnseq[tmp];
@@ -933,9 +790,7 @@ namespace org.apache.tools.bzip2
                     // int zvec = bsR(zn);
                     while (bsLiveShadow < zn)
                     {
-                        //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                        //ORIGINAL LINE: final int thech = inShadow.read();
-                        int thech = inShadow.read();
+                        var thech = inShadow.read();
                         if (thech >= 0)
                         {
                             bsBuffShadow = (bsBuffShadow << 8) | thech;
@@ -951,9 +806,7 @@ namespace org.apache.tools.bzip2
                         zn++;
                         while (bsLiveShadow < 1)
                         {
-                            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                            //ORIGINAL LINE: final int thech = inShadow.read();
-                            int thech = inShadow.read();
+                            var thech = inShadow.read();
                             if (thech >= 0)
                             {
                                 bsBuffShadow = (bsBuffShadow << 8) | thech;
@@ -972,23 +825,12 @@ namespace org.apache.tools.bzip2
             bsLive = bsLiveShadow;
             bsBuff = bsBuffShadow;
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private int getAndMoveToFrontDecode0(final int groupNo) throws java.io.IOException
         //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
         private int GetAndMoveToFrontDecode0(int groupNo)
         {
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final java.io.InputStream inShadow = this.in;
             var inShadow = @in;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final Data dataShadow = this.data;
             var dataShadow = data;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int zt = dataShadow.selector[groupNo] & 0xff;
             var zt = dataShadow.selector[groupNo] & 0xff;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[] limit_zt = dataShadow.limit[zt];
             var limit_zt = dataShadow.limit[zt];
             var zn = dataShadow.minLens[zt];
             var zvec = BsR(zn);
@@ -1000,9 +842,7 @@ namespace org.apache.tools.bzip2
                 zn++;
                 while (bsLiveShadow < 1)
                 {
-                    //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-                    //ORIGINAL LINE: final int thech = inShadow.read();
-                    int thech = inShadow.read();
+                    var thech = inShadow.read();
 
                     if (thech >= 0)
                     {
@@ -1020,24 +860,14 @@ namespace org.apache.tools.bzip2
 
             return dataShadow.perm[zt][zvec - dataShadow.@base[zt][zn]];
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setupBlock() throws java.io.IOException
         private void SetupBlock()
         {
             if (data == null)
             {
                 return;
             }
-
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[] cftab = this.data.cftab;
             var cftab = data.cftab;
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int[] tt = this.data.initTT(this.last + 1);
             var tt = data.InitTT(last + 1);
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final byte[] ll8 = this.data.ll8;
             var ll8 = data.ll8;
             cftab[0] = 0;
             Array.Copy(data.unzftab, 0, cftab, 1, 256);
@@ -1080,9 +910,6 @@ namespace org.apache.tools.bzip2
                 SetupNoRandPartA();
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setupRandPartA() throws java.io.IOException
         private void SetupRandPartA()
         {
             if (su_i2 <= last)
@@ -1115,9 +942,6 @@ namespace org.apache.tools.bzip2
                 SetupBlock();
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setupNoRandPartA() throws java.io.IOException
         private void SetupNoRandPartA()
         {
             if (su_i2 <= last)
@@ -1139,9 +963,6 @@ namespace org.apache.tools.bzip2
                 SetupBlock();
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setupRandPartB() throws java.io.IOException
         private void SetupRandPartB()
         {
             if (su_ch2 != su_chPrev)
@@ -1170,7 +991,7 @@ namespace org.apache.tools.bzip2
                 currentState = RAND_PART_C_STATE;
                 if (su_rNToGo == 1)
                 {
-                    su_z ^= 1;
+                    su_z ^= (char) 1;
                 }
                 SetupRandPartC();
             }
@@ -1180,9 +1001,6 @@ namespace org.apache.tools.bzip2
                 SetupRandPartA();
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setupRandPartC() throws java.io.IOException
         private void SetupRandPartC()
         {
             if (su_j2 < su_z)
@@ -1199,9 +1017,6 @@ namespace org.apache.tools.bzip2
                 SetupRandPartA();
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setupNoRandPartB() throws java.io.IOException
         private void SetupNoRandPartB()
         {
             if (su_ch2 != su_chPrev)
@@ -1221,9 +1036,6 @@ namespace org.apache.tools.bzip2
                 SetupNoRandPartA();
             }
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setupNoRandPartC() throws java.io.IOException
         private void SetupNoRandPartC()
         {
             if (su_j2 < su_z)
@@ -1242,13 +1054,18 @@ namespace org.apache.tools.bzip2
             }
         }
 
+        public override int read()
+        {
+            return @in.read();
+        }
+
         private sealed class Data : object
         {
             // (with blockSize 900k)
 
             //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
             //ORIGINAL LINE: internal readonly int[][] base = new int[BZip2Constants_Fields.N_GROUPS][BZip2Constants_Fields.MAX_ALPHA_SIZE]; //     6192 byte
-            internal readonly int[][] @base = RectangularArrays.ReturnRectangularIntArray(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     6192 byte
+            internal readonly int[][] @base = ArrayUtilities.ReturnRectangularArray<int>(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     6192 byte
 
             //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
             //ORIGINAL LINE: internal readonly int[][] perm = new int[BZip2Constants_Fields.N_GROUPS][BZip2Constants_Fields.MAX_ALPHA_SIZE]; //     6192 byte
@@ -1259,11 +1076,11 @@ namespace org.apache.tools.bzip2
 
             internal readonly bool[] inUse = new bool[256]; //      256 byte
 
-            internal readonly int[][] limit = RectangularArrays.ReturnRectangularIntArray(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     6192 byte
+            internal readonly int[][] limit = ArrayUtilities.ReturnRectangularArray<int>(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     6192 byte
 
             internal readonly int[] minLens = new int[BZip2Constants_Fields.N_GROUPS]; //       24 byte
 
-            internal readonly int[][] perm = RectangularArrays.ReturnRectangularIntArray(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     6192 byte
+            internal readonly int[][] perm = ArrayUtilities.ReturnRectangularArray<int>(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     6192 byte
 
             //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
             //ORIGINAL LINE: internal readonly char[][] temp_charArray2d = new char[BZip2Constants_Fields.N_GROUPS][BZip2Constants_Fields.MAX_ALPHA_SIZE]; //     3096 byte
@@ -1276,7 +1093,7 @@ namespace org.apache.tools.bzip2
 
             internal readonly byte[] seqToUnseq = new byte[256]; //      256 byte
 
-            internal readonly char[][] temp_charArray2d = RectangularArrays.ReturnRectangularCharArray(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     3096 byte
+            internal readonly char[][] temp_charArray2d = ArrayUtilities.ReturnRectangularArray<char>(BZip2Constants_Fields.N_GROUPS, BZip2Constants_Fields.MAX_ALPHA_SIZE); //     3096 byte
 
             /// <summary>
             ///     Freq table collected to save a pass over the data during
@@ -1322,11 +1139,6 @@ namespace org.apache.tools.bzip2
 
                 return ttShadow;
             }
-        }
-
-        public override int read()
-        {
-            return @in.read();
         }
     }
 }

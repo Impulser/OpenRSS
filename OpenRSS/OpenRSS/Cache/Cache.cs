@@ -6,12 +6,11 @@ using java.text;
 using java.util;
 using java.util.zip;
 
-using net.openrs.util;
-using net.openrs.util.crypto;
-
 using OpenRSS.JavaAPI;
+using OpenRSS.Utility;
+using OpenRSS.Utility.Cryptography;
 
-namespace net.openrs.cache
+namespace OpenRSS.Cache
 {
     /// <summary>
     ///     The <seealso cref="Cache" /> class provides a unified, high-level API for modifying
@@ -40,8 +39,6 @@ namespace net.openrs.cache
         /// </summary>
         /// <returns> The number of index files. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public int getTypeCount() throws java.io.IOException
         public int GetTypeCount()
         {
             return store.GetTypeCount();
@@ -53,8 +50,6 @@ namespace net.openrs.cache
         /// <param name="type"> The type. </param>
         /// <returns> The number of files. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public int getFileCount(int type) throws java.io.IOException
         public int GetFileCount(int type)
         {
             return store.GetFileCount(type);
@@ -75,8 +70,6 @@ namespace net.openrs.cache
         /// </summary>
         /// <returns> The <seealso cref="ChecksumTable" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public ChecksumTable createChecksumTable() throws java.io.IOException
         public ChecksumTable CreateChecksumTable()
         {
             /* create the checksum table */
@@ -98,7 +91,8 @@ namespace net.openrs.cache
                  */
                 if (buf.limit() > 0) // some indices are not used, is this appropriate?
                 {
-                    var @ref = ReferenceTable.Decode(Container.Decode(buf).GetData());
+                    var @ref = ReferenceTable.Decode(Container.Decode(buf)
+                                                              .GetData());
                     crc = ByteBufferUtils.GetCrcChecksum(buf);
                     version = @ref.GetVersion();
                     buf.position(0);
@@ -119,8 +113,6 @@ namespace net.openrs.cache
         /// <param name="file"> The file id. </param>
         /// <returns> The file. </returns>
         /// <exception cref="IOException"> if an I/O error occurred. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public Container read(int type, int file) throws java.io.IOException
         public Container Read(int type, int file)
         {
             /* we don't want people reading/manipulating these manually */
@@ -141,8 +133,6 @@ namespace net.openrs.cache
         /// <param name="file"> The file id. </param>
         /// <param name="container"> The <seealso cref="Container" /> to write. </param>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void write(int type, int file, Container container) throws java.io.IOException
         public void Write(int type, int file, Container container)
         {
             /* we don't want people reading/manipulating these manually */
@@ -213,8 +203,6 @@ namespace net.openrs.cache
         /// <param name="file"> The file within the archive. </param>
         /// <returns> The file. </returns>
         /// <exception cref="IOException"> if an I/O error occurred. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer read(int type, int file, int member) throws java.io.IOException
         public ByteBuffer Read(int type, int file, int member)
         {
             /* grab the container and the reference table */
@@ -242,8 +230,6 @@ namespace net.openrs.cache
         /// <param name="member"> The file within the archive. </param>
         /// <param name="data"> The data to write. </param>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void write(int type, int file, int member, java.nio.ByteBuffer data) throws java.io.IOException
         public void Write(int type, int file, int member, ByteBuffer data)
         {
             /* grab the reference table */
@@ -322,9 +308,6 @@ namespace net.openrs.cache
             container = new Container(containerType, archive.Encode(), containerVersion);
             Write(type, file, container);
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: @Override public void close() throws java.io.IOException
         public override void Close()
         {
             store.Close();

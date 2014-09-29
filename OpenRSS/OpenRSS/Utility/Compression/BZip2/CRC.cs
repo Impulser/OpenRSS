@@ -29,7 +29,7 @@ using java.nio;
 using java.text;
 using java.util;
 
-namespace org.apache.tools.bzip2
+namespace OpenRSS.Utility.Compression.BZip2
 {
     /// <summary>
     ///     A simple class the hold and calculate the CRC for sanity checking

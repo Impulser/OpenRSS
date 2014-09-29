@@ -5,9 +5,9 @@ using java.nio;
 using java.text;
 using java.util;
 
-using net.openrs.util;
+using OpenRSS.Utility;
 
-namespace net.openrs.cache.def
+namespace OpenRSS.Cache.Definition
 {
     /// <summary>
     ///     A class that loads item/model information from the cache.
@@ -347,7 +347,7 @@ namespace net.openrs.cache.def
                     {
                         var stringInstance = buffer.get() == 1;
                         var key = ByteBufferUtils.GetTriByte(buffer);
-                        var value = stringInstance ? (object)ByteBufferUtils.GetJagexString(buffer) : buffer.getInt();
+                        var value = stringInstance ? (object) ByteBufferUtils.GetJagexString(buffer) : buffer.getInt();
                     }
                 }
             }

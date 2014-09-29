@@ -7,7 +7,7 @@ using java.nio;
 using java.text;
 using java.util;
 
-using net.openrs.util;
+using OpenRSS.Utility;
 
 namespace OpenRSS.Cache
 {
@@ -151,7 +151,7 @@ namespace OpenRSS.Cache
         /// <returns> The encoded buffer. </returns>
         public ByteBuffer Encode()
         {
-            ByteBuffer buf = ByteBuffer.allocate(SIZE);
+            var buf = ByteBuffer.allocate(SIZE);
 
             buf.putShort((short) id);
             buf.putShort((short) chunk);

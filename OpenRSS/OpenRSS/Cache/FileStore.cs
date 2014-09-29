@@ -59,8 +59,6 @@ namespace OpenRSS.Cache
         ///     if any of the {@code main_file_cache.*}
         ///     files could not be found.
         /// </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static FileStore open(String root) throws java.io.FileNotFoundException
         public static FileStore Open(string root)
         {
             return Open(new File(root));
@@ -75,8 +73,6 @@ namespace OpenRSS.Cache
         ///     if any of the {@code main_file_cache.*}
         ///     files could not be found.
         /// </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static FileStore open(java.io.File root) throws java.io.FileNotFoundException
         public static FileStore Open(File root)
         {
             var data = new File(root, "main_file_cache.dat2");
@@ -124,8 +120,6 @@ namespace OpenRSS.Cache
         /// </summary>
         /// <returns> The number of index files. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public int getTypeCount() throws java.io.IOException
         public int GetTypeCount()
         {
             return indexChannels.Length;
@@ -137,8 +131,6 @@ namespace OpenRSS.Cache
         /// <param name="type"> The type. </param>
         /// <returns> The number of files. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public int getFileCount(int type) throws java.io.IOException
         public int GetFileCount(int type)
         {
             if ((type < 0 || type >= indexChannels.Length) && type != 255)
@@ -160,8 +152,6 @@ namespace OpenRSS.Cache
         /// <param name="id"> The id of the file. </param>
         /// <param name="data"> A <seealso cref="ByteBuffer" /> containing the contents of the file. </param>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void write(int type, int id, java.nio.ByteBuffer data) throws java.io.IOException
         public void Write(int type, int id, ByteBuffer data)
         {
             data.mark();
@@ -184,8 +174,6 @@ namespace OpenRSS.Cache
         /// </param>
         /// <returns> A flag indicating if the file was written successfully. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private boolean write(int type, int id, java.nio.ByteBuffer data, boolean overwrite) throws java.io.IOException
         private bool Write(int type, int id, ByteBuffer data, bool overwrite)
         {
             if ((type < 0 || type >= indexChannels.Length) && type != 255)
@@ -314,8 +302,6 @@ namespace OpenRSS.Cache
         /// <param name="id"> The id of the file. </param>
         /// <returns> A <seealso cref="ByteBuffer" /> containing the contents of the file. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer read(int type, int id) throws java.io.IOException
         public ByteBuffer Read(int type, int id)
         {
             if ((type < 0 || type >= indexChannels.Length) && type != 255)
@@ -380,9 +366,6 @@ namespace OpenRSS.Cache
 
             return (ByteBuffer) data.flip();
         }
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: @Override public void close() throws java.io.IOException
         public override void Close()
         {
             dataChannel.close();

@@ -8,9 +8,9 @@ using java.nio;
 using java.text;
 using java.util;
 
-using net.openrs.util.crypto;
+using OpenRSS.Utility.Cryptography;
 
-namespace net.openrs.cache
+namespace OpenRSS.Cache
 {
     /// <summary>
     ///     A <seealso cref="ChecksumTable" /> stores checksums and versions of
@@ -43,8 +43,6 @@ namespace net.openrs.cache
         /// <param name="buffer"> The <seealso cref="ByteBuffer" /> containing the table. </param>
         /// <returns> The decoded <seealso cref="ChecksumTable" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static ChecksumTable decode(java.nio.ByteBuffer buffer) throws java.io.IOException
         public static ChecksumTable Decode(ByteBuffer buffer)
         {
             return Decode(buffer, false);
@@ -58,8 +56,6 @@ namespace net.openrs.cache
         /// <param name="whirlpool"> If whirlpool digests should be read. </param>
         /// <returns> The decoded <seealso cref="ChecksumTable" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static ChecksumTable decode(java.nio.ByteBuffer buffer, boolean whirlpool) throws java.io.IOException
         public static ChecksumTable Decode(ByteBuffer buffer, bool whirlpool)
         {
             return Decode(buffer, whirlpool, null, null);
@@ -75,8 +71,6 @@ namespace net.openrs.cache
         /// <param name="publicKey"> The public key. </param>
         /// <returns> The decoded <seealso cref="ChecksumTable" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static ChecksumTable decode(java.nio.ByteBuffer buffer, boolean whirlpool, java.math.BigInteger modulus, java.math.BigInteger publicKey) throws java.io.IOException
         public static ChecksumTable Decode(ByteBuffer buffer, bool whirlpool, BigInteger modulus, BigInteger publicKey)
         {
             /* find out how many entries there are and allocate a new table */
@@ -97,8 +91,8 @@ namespace net.openrs.cache
             buffer.position(1);
             for (var i = 0; i < size; i++)
             {
-                int crc = buffer.getInt();
-                int version = buffer.getInt();
+                var crc = buffer.getInt();
+                var version = buffer.getInt();
                 var digest = new byte[64];
                 if (whirlpool)
                 {
@@ -112,7 +106,7 @@ namespace net.openrs.cache
             {
                 var bytes = new byte[buffer.remaining()];
                 buffer.get(bytes);
-                ByteBuffer temp = ByteBuffer.wrap(bytes);
+                var temp = ByteBuffer.wrap(bytes);
 
                 if (modulus != null && publicKey != null)
                 {
@@ -142,8 +136,6 @@ namespace net.openrs.cache
         /// </summary>
         /// <returns> The encoded <seealso cref="ByteBuffer" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer encode() throws java.io.IOException
         public virtual ByteBuffer Encode()
         {
             return Encode(false);
@@ -155,8 +147,6 @@ namespace net.openrs.cache
         /// <param name="whirlpool"> If whirlpool digests should be encoded. </param>
         /// <returns> The encoded <seealso cref="ByteBuffer" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer encode(boolean whirlpool) throws java.io.IOException
         public virtual ByteBuffer Encode(bool whirlpool)
         {
             return Encode(whirlpool, null, null);
@@ -170,9 +160,7 @@ namespace net.openrs.cache
         /// <param name="privateKey"> The private key. </param>
         /// <returns> The encoded <seealso cref="ByteBuffer" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer encode(boolean whirlpool, java.math.BigInteger modulus, java.math.BigInteger privateKey) throws java.io.IOException
-        public virtual ByteBuffer Encode(bool whirlpool, System.Numerics.BigInteger modulus, System.Numerics.BigInteger privateKey)
+        public virtual ByteBuffer Encode(bool whirlpool, BigInteger modulus, BigInteger privateKey)
         {
             var bout = new ByteArrayOutputStream();
             var os = new DataOutputStream(bout);
@@ -197,13 +185,14 @@ namespace net.openrs.cache
                 }
 
                 /* compute (and encrypt) the digest of the whole table */
+                byte[] bytes;
                 if (whirlpool)
                 {
-                    byte[] bytes = bout.toByteArray();
-                    ByteBuffer temp = ByteBuffer.allocate(66);
-                    temp.put((byte) 0);
+                    bytes = bout.toByteArray();
+                    var temp = ByteBuffer.allocate(66);
+                    temp.put(0);
                     temp.put(Whirlpool.Crypt(bytes, 5, bytes.Length - 5));
-                    temp.put((byte) 0);
+                    temp.put(0);
                     temp.flip();
 
                     if (modulus != null && privateKey != null)
@@ -216,7 +205,7 @@ namespace net.openrs.cache
                     os.write(bytes);
                 }
 
-                byte[] bytes = bout.toByteArray();
+                bytes = bout.toByteArray();
                 return ByteBuffer.wrap(bytes);
             }
             finally

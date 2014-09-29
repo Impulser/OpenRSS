@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AFA0D36F-F8C5-4897-8D36-11D155D3E144}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{E51534B3-7DC5-4C27-BCC3-55ECBEDAFD8E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRSS</RootNamespace>
-    <AssemblyName>OpenRSS</AssemblyName>
+    <RootNamespace>ConsoleTool</RootNamespace>
+    <AssemblyName>ConsoleTool</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -118,33 +120,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JavaAPI\AbstractCloseable.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\ArrayUtilities.cs" />
-    <Compile Include="Cache\Archive.cs" />
-    <Compile Include="Cache\Cache.cs" />
-    <Compile Include="Cache\ChecksumTable.cs" />
-    <Compile Include="Cache\Container.cs" />
-    <Compile Include="Cache\Definition\ItemDefinition.cs" />
-    <Compile Include="Cache\FileStore.cs" />
-    <Compile Include="Cache\Index.cs" />
-    <Compile Include="Cache\ReferenceTable.cs" />
-    <Compile Include="Cache\Sector.cs" />
-    <Compile Include="Cache\Sprite\Sprite.cs" />
-    <Compile Include="Utility\Compression\CompressionUtils.cs" />
-    <Compile Include="Utility\ByteBufferUtils.cs" />
-    <Compile Include="Utility\Cryptography\Djb2.cs" />
-    <Compile Include="Utility\Cryptography\Rsa.cs" />
-    <Compile Include="Utility\Cryptography\Whirlpool.cs" />
-    <Compile Include="Utility\Cryptography\Xtea.cs" />
-    <Compile Include="Utility\FileChannelUtils.cs" />
-    <Compile Include="Utility\Compression\BZip2\BZip2Constants.cs" />
-    <Compile Include="Utility\Compression\BZip2\CBZip2InputStream.cs" />
-    <Compile Include="Utility\Compression\BZip2\CBZip2OutputStream.cs" />
-    <Compile Include="Utility\Compression\BZip2\CRC.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRSS\OpenRSS.csproj">
+      <Project>{afa0d36f-f8c5-4897-8d36-11d155d3e144}</Project>
+      <Name>OpenRSS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

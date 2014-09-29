@@ -9,11 +9,9 @@ using java.nio;
 using java.text;
 using java.util;
 
-using net.openrs.util.crypto;
+using OpenRSS.Utility.Cryptography;
 
-using OpenRSS.JavaAPI;
-
-namespace net.openrs.cache
+namespace OpenRSS.Cache
 {
     /// <summary>
     ///     A <seealso cref="ReferenceTable" /> holds details for all the files with a single
@@ -101,16 +99,14 @@ namespace net.openrs.cache
             {
                 foreach (var id in ids)
                 {
-                    table.entries[id]
-                         .identifier = buffer.getInt();
+                    table.entries[id].identifier = buffer.getInt();
                 }
             }
 
             /* read the CRC32 checksums */
             foreach (var id in ids)
             {
-                table.entries[id]
-                     .crc = buffer.getInt();
+                table.entries[id].crc = buffer.getInt();
             }
 
             /* read the whirlpool digests if present */
@@ -118,16 +114,14 @@ namespace net.openrs.cache
             {
                 foreach (var id in ids)
                 {
-                    buffer.get(table.entries[id]
-                                    .whirlpool);
+                    buffer.get(table.entries[id].whirlpool);
                 }
             }
 
             /* read the version numbers */
             foreach (var id in ids)
             {
-                table.entries[id]
-                     .version = buffer.getInt();
+                table.entries[id].version = buffer.getInt();
             }
 
             /* read the child sizes */
@@ -159,8 +153,7 @@ namespace net.openrs.cache
                 /* and allocate specific entries within the array */
                 foreach (var child in members[id])
                 {
-                    table.entries[id]
-                         .entries.Add(child, new ChildEntry());
+                    table.entries[id].entries.Add(child, new ChildEntry());
                 }
             }
 
@@ -171,9 +164,7 @@ namespace net.openrs.cache
                 {
                     foreach (var child in members[id])
                     {
-                        table.entries[id]
-                             .entries[child]
-                             .identifier = buffer.getInt();
+                        table.entries[id].entries[child].identifier = buffer.getInt();
                     }
                 }
             }
@@ -256,7 +247,7 @@ namespace net.openrs.cache
         /// <returns> The entry. </returns>
         public virtual ChildEntry GetEntry(int id, int child)
         {
-            Entry entry = entries[id];
+            var entry = entries[id];
             if (entry == null)
             {
                 return null;
@@ -304,7 +295,8 @@ namespace net.openrs.cache
                 return 0;
             }
 
-            return entries.Keys.Last().Value + 1;
+            return entries.Keys.Last()
+                          .Value + 1;
         }
 
         /// <summary>
@@ -312,8 +304,6 @@ namespace net.openrs.cache
         /// </summary>
         /// <returns> The <seealso cref="ByteBuffer" />. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer encode() throws java.io.IOException
         public virtual ByteBuffer Encode()
         {
             /* 
@@ -350,14 +340,14 @@ namespace net.openrs.cache
                 /* write the identifiers if required */
                 if ((flags & FLAG_IDENTIFIERS) != 0)
                 {
-                    foreach (Entry entry in entries.Values)
+                    foreach (var entry in entries.Values)
                     {
                         os.writeInt(entry.identifier);
                     }
                 }
 
                 /* write the CRC checksums */
-                foreach (Entry entry in entries.Values)
+                foreach (var entry in entries.Values)
                 {
                     os.writeInt(entry.crc);
                 }
@@ -365,26 +355,26 @@ namespace net.openrs.cache
                 /* write the whirlpool digests if required */
                 if ((flags & FLAG_WHIRLPOOL) != 0)
                 {
-                    foreach (Entry entry in entries.Values)
+                    foreach (var entry in entries.Values)
                     {
                         os.write(entry.whirlpool);
                     }
                 }
 
                 /* write the versions */
-                foreach (Entry entry in entries.Values)
+                foreach (var entry in entries.Values)
                 {
                     os.writeInt(entry.version);
                 }
 
                 /* calculate and write the number of non-null child entries */
-                foreach (Entry entry in entries.Values)
+                foreach (var entry in entries.Values)
                 {
                     os.writeShort(entry.entries.Count);
                 }
 
                 /* write the child ids */
-                foreach (Entry entry in entries.Values)
+                foreach (var entry in entries.Values)
                 {
                     last = 0;
                     for (var id = 0; id < entry.Capacity(); id++)
@@ -401,9 +391,9 @@ namespace net.openrs.cache
                 /* write the child identifiers if required  */
                 if ((flags & FLAG_IDENTIFIERS) != 0)
                 {
-                    foreach (Entry entry in entries.Values)
+                    foreach (var entry in entries.Values)
                     {
-                        foreach (ChildEntry child in entry.entries.Values)
+                        foreach (var child in entry.entries.Values)
                         {
                             os.writeInt(child.identifier);
                         }
@@ -411,7 +401,7 @@ namespace net.openrs.cache
                 }
 
                 /* convert the stream to a byte array and then wrap a buffer */
-                byte[] bytes = bout.toByteArray();
+                var bytes = bout.toByteArray();
                 return ByteBuffer.wrap(bytes);
             }
             finally
@@ -580,7 +570,8 @@ namespace net.openrs.cache
                     return 0;
                 }
 
-                return entries.Last().Key.Value + 1;
+                return entries.Last()
+                              .Key.Value + 1;
             }
 
             /// <summary>

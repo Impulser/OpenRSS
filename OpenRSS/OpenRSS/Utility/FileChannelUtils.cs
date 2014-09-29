@@ -27,8 +27,6 @@ namespace OpenRSS.Utility
         ///     if the end of the file was reached and the buffer
         ///     could not be completely populated.
         /// </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static void readFully(java.nio.channels.FileChannel channel, java.nio.ByteBuffer buffer, long ptr) throws java.io.IOException
         public static void ReadFully(FileChannel channel, ByteBuffer buffer, long ptr)
         {
             while (buffer.remaining() > 0)

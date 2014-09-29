@@ -9,7 +9,7 @@ using java.util;
 
 using Exception = System.Exception;
 
-namespace net.openrs.util.crypto
+namespace OpenRSS.Utility.Cryptography
 {
     /// <summary>
     ///     The Whirlpool hashing function.
@@ -81,7 +81,7 @@ namespace net.openrs.util.crypto
 
         //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
         //ORIGINAL LINE: private static long[][] C = new long[8][256];
-        private static long[][] C = RectangularArrays.ReturnRectangularLongArray(8, 256);
+        private static long[][] C = ArrayUtilities.ReturnRectangularArray<long>(8, 256);
 
         private static long[] rc = new long[R + 1];
 
@@ -161,7 +161,7 @@ namespace net.openrs.util.crypto
             for (var r = 1; r <= R; r++)
             {
                 var i = 8 * (r - 1);
-                rc[r] = (C[0][i] & unchecked((long)0xff00000000000000L)) ^ (C[1][i + 1] & 0x00ff000000000000L) ^ (C[2][i + 2] & 0x0000ff0000000000L) ^ (C[3][i + 3] & 0x000000ff00000000L) ^
+                rc[r] = (C[0][i] & unchecked((long) 0xff00000000000000L)) ^ (C[1][i + 1] & 0x00ff000000000000L) ^ (C[2][i + 2] & 0x0000ff0000000000L) ^ (C[3][i + 3] & 0x000000ff00000000L) ^
                         (C[4][i + 4] & 0x00000000ff000000L) ^ (C[5][i + 5] & 0x0000000000ff0000L) ^ (C[6][i + 6] & 0x000000000000ff00L) ^ (C[7][i + 7] & 0x00000000000000ffL);
             }
         }
@@ -269,7 +269,7 @@ namespace net.openrs.util.crypto
         /// </summary>
         public virtual void NESSIEinit()
         {
-            Arrays.fill(bitLength, (byte) 0);
+            Arrays.fill(bitLength, 0);
             bufferBits = bufferPos = 0;
             buffer[0] = 0; // it's only necessary to cleanup buffer[bufferPos].
             Arrays.fill(hash, 0L); // initial value

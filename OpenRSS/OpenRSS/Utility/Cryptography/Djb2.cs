@@ -5,21 +5,15 @@ using java.nio;
 using java.text;
 using java.util;
 
-namespace net.openrs.util.crypto
+namespace OpenRSS.Utility.Cryptography
 {
     /// <summary>
     ///     An implementation of the {@code djb2} hash function.
     ///     @author Graham
     ///     @author `Discardedx2
     /// </summary>
-    public sealed class Djb2
+    public static class Djb2
     {
-        /// <summary>
-        ///     Default private constructor to prevent instantiation.
-        /// </summary>
-        private Djb2()
-        { }
-
         /// <summary>
         ///     An implementation of Dan Bernstein's {@code djb2} hash function
         ///     which is slightly modified. Instead of the initial hash being 5381, it
@@ -27,7 +21,7 @@ namespace net.openrs.util.crypto
         /// </summary>
         /// <param name="str"> The string to hash. </param>
         /// <returns> The hash code. </returns>
-        public static int Djb2(string str)
+        public static int Crypt(string str)
         {
             var hash = 0;
             for (var i = 0; i < str.Length; i++)

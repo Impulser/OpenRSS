@@ -8,9 +8,9 @@ using java.text;
 using java.util;
 using java.util.zip;
 
-using org.apache.tools.bzip2;
+using OpenRSS.Utility.Compression.BZip2;
 
-namespace net.openrs.cache.util
+namespace OpenRSS.Utility.Compression
 {
     /// <summary>
     ///     A class that contains methods to compress and uncompress BZIP2 and GZIP
@@ -18,13 +18,8 @@ namespace net.openrs.cache.util
     ///     @author Graham
     ///     @author `Discardedx2
     /// </summary>
-    public sealed class CompressionUtils
+    public static class CompressionUtils
     {
-        /// <summary>
-        ///     Default private constructor to prevent instantiation.
-        /// </summary>
-        private CompressionUtils()
-        { }
 
         /// <summary>
         ///     Compresses a GZIP file.
@@ -32,8 +27,6 @@ namespace net.openrs.cache.util
         /// <param name="bytes"> The uncompressed bytes. </param>
         /// <returns> The compressed bytes. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static byte[] gzip(byte[] bytes) throws java.io.IOException
         public static byte[] Gzip(byte[] bytes)
         {
             /* create the streams */
@@ -72,8 +65,6 @@ namespace net.openrs.cache.util
         /// <param name="bytes"> The compressed bytes. </param>
         /// <returns> The uncompressed bytes. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static byte[] gunzip(byte[] bytes) throws java.io.IOException
         public static byte[] Gunzip(byte[] bytes)
         {
             /* create the streams */
@@ -111,8 +102,6 @@ namespace net.openrs.cache.util
         /// <param name="bytes"> The uncompressed bytes. </param>
         /// <returns> The compressed bytes without the header. </returns>
         /// <exception cref="IOException"> if an I/O erorr occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static byte[] bzip2(byte[] bytes) throws java.io.IOException
         public static byte[] Bzip2(byte[] bytes)
         {
             var @is = new ByteArrayInputStream(bytes);
@@ -152,14 +141,12 @@ namespace net.openrs.cache.util
         /// <param name="bytes"> The compressed bytes without the header. </param>
         /// <returns> The uncompressed bytes. </returns>
         /// <exception cref="IOException"> if an I/O error occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static byte[] bunzip2(byte[] bytes) throws java.io.IOException
         public static byte[] Bunzip2(byte[] bytes)
         {
             /* prepare a new byte array with the bzip2 header at the start */
             var bzip2 = new byte[bytes.Length + 2];
-            bzip2[0] = 'h';
-            bzip2[1] = '1';
+            bzip2[0] = (byte) 'h';
+            bzip2[1] = (byte) '1';
             Array.Copy(bytes, 0, bzip2, 2, bytes.Length);
 
             InputStream @is = new CBZip2InputStream(new ByteArrayInputStream(bzip2));
@@ -169,7 +156,7 @@ namespace net.openrs.cache.util
                 try
                 {
                     var buf = new byte[4096];
-                    var len = 0;
+                    int len;
                     while ((len = @is.read(buf, 0, buf.Length)) != -1)
                     {
                         os.write(buf, 0, len);

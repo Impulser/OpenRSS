@@ -9,9 +9,9 @@ using java.nio;
 using java.text;
 using java.util;
 
-using net.openrs.util;
+using OpenRSS.Utility;
 
-namespace net.openrs.cache.sprite
+namespace OpenRSS.Cache.sprite
 {
     /// <summary>
     ///     Represents a <seealso cref="Sprite" /> which may contain one or more frames.
@@ -146,7 +146,7 @@ namespace net.openrs.cache.sprite
                 /* allocate an array for the palette indices */
                 //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
                 //ORIGINAL LINE: int[][] indices = new int[subWidth][subHeight];
-                var indices = RectangularArrays.ReturnRectangularIntArray(subWidth, subHeight);
+                var indices = ArrayUtilities.ReturnRectangularArray<int>(subWidth, subHeight);
 
                 /* read the flags so we know whether to read horizontally or vertically */
                 var flags = buffer.get() & 0xFF;
@@ -282,8 +282,6 @@ namespace net.openrs.cache.sprite
         /// </summary>
         /// <returns> The buffer. </returns>
         /// <exception cref="IOException"> if an I/O exception occurs. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public java.nio.ByteBuffer encode() throws java.io.IOException
         public ByteBuffer Encode()
         {
             var bout = new ByteArrayOutputStream();
@@ -310,7 +308,7 @@ namespace net.openrs.cache.sprite
                         for (var y = 0; y < height; y++)
                         {
                             /* grab the colour of this pixel */
-                            int argb = image.getRGB(x, y);
+                            var argb = image.getRGB(x, y);
                             var alpha = (argb >> 24) & 0xFF;
                             var rgb = argb & 0xFFFFFF;
                             if (rgb == 0)
@@ -342,7 +340,7 @@ namespace net.openrs.cache.sprite
                     {
                         for (var y = 0; y < height; y++)
                         {
-                            int argb = image.getRGB(x, y);
+                            var argb = image.getRGB(x, y);
                             var alpha = (argb >> 24) & 0xFF;
                             var rgb = argb & 0xFFFFFF;
                             if (rgb == 0)
@@ -368,7 +366,7 @@ namespace net.openrs.cache.sprite
                         {
                             for (var y = 0; y < height; y++)
                             {
-                                int argb = image.getRGB(x, y);
+                                var argb = image.getRGB(x, y);
                                 var alpha = (argb >> 24) & 0xFF;
                                 os.write(alpha);
                             }
@@ -379,7 +377,7 @@ namespace net.openrs.cache.sprite
                 /* write the palette */
                 for (var i = 1; i < palette.Count; i++)
                 {
-                    int rgb = (int) palette[i];
+                    var rgb = (int) palette[i];
                     os.write((byte) (rgb >> 16));
                     os.write((byte) (rgb >> 8));
                     os.write((byte) rgb);
@@ -403,7 +401,7 @@ namespace net.openrs.cache.sprite
                 os.writeShort(frames.Length);
 
                 /* convert the stream to a byte array and then wrap a buffer */
-                byte[] bytes = bout.toByteArray();
+                var bytes = bout.toByteArray();
                 return ByteBuffer.wrap(bytes);
             }
             finally

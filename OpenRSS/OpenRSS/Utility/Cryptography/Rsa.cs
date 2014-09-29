@@ -6,21 +6,15 @@ using java.nio;
 using java.text;
 using java.util;
 
-namespace net.openrs.util.crypto
+namespace OpenRSS.Utility.Cryptography
 {
     /// <summary>
     ///     An implementation of the RSA algorithm.
     ///     @author Graham
     ///     @author `Discardedx2
     /// </summary>
-    public sealed class Rsa
+    public static class Rsa
     {
-        /// <summary>
-        ///     Default private constructor to prevent instantiation.
-        /// </summary>
-        private Rsa()
-        { }
-
         /// <summary>
         ///     Encrypts/decrypts the specified buffer with the key and modulus.
         /// </summary>
@@ -34,7 +28,7 @@ namespace net.openrs.util.crypto
             buffer.get(bytes);
 
             var @in = new BigInteger(bytes);
-            BigInteger @out = @in.modPow(key, modulus);
+            var @out = @in.modPow(key, modulus);
 
             return ByteBuffer.wrap(@out.toByteArray());
         }

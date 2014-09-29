@@ -29,7 +29,7 @@ using java.nio;
 using java.text;
 using java.util;
 
-namespace org.apache.tools.bzip2
+namespace OpenRSS.Utility.Compression.BZip2
 {
     /// <summary>
     ///     Base class for both the compress and decompress classes.
