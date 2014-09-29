@@ -17,7 +17,7 @@ namespace OpenRSS.Utility
     ///     @author Graham
     ///     @author `Discardedx2
     /// </summary>
-    public static class ByteBufferUtils
+    public static class ByteBufferExtensions
     {
         /// <summary>
         ///     The modified set of 'extended ASCII' characters used by the client.
@@ -63,7 +63,7 @@ namespace OpenRSS.Utility
         /// </summary>
         /// <param name="buf"> The buffer. </param>
         /// <returns> The decoded string. </returns>
-        public static string GetJagexString(ByteBuffer buf)
+        public static string GetJagexString(this ByteBuffer buf)
         {
             var bldr = new StringBuilder();
             int b;
@@ -90,7 +90,7 @@ namespace OpenRSS.Utility
         /// </summary>
         /// <param name="buf"> The buffer. </param>
         /// <returns> The value. </returns>
-        public static int GetTriByte(ByteBuffer buf)
+        public static int GetTriByte(this ByteBuffer buf)
         {
             return ((buf.get() & 0xFF) << 16) | ((buf.get() & 0xFF) << 8) | (buf.get() & 0xFF);
         }
@@ -100,7 +100,7 @@ namespace OpenRSS.Utility
         /// </summary>
         /// <param name="buf"> The buffer. </param>
         /// <param name="value"> The value. </param>
-        public static void PutTriByte(ByteBuffer buf, int value)
+        public static void PutTriByte(this ByteBuffer buf, int value)
         {
             buf.put((byte) (value >> 16));
             buf.put((byte) (value >> 8));
@@ -112,7 +112,7 @@ namespace OpenRSS.Utility
         /// </summary>
         /// <param name="buffer"> The buffer. </param>
         /// <returns> The CRC32 checksum. </returns>
-        public static int GetCrcChecksum(ByteBuffer buffer)
+        public static int GetCrcChecksum(this ByteBuffer buffer)
         {
             var crc = new CRC32();
             for (var i = 0; i < buffer.limit(); i++)
@@ -127,7 +127,7 @@ namespace OpenRSS.Utility
         /// </summary>
         /// <param name="buf"> The buffer. </param>
         /// <returns> The 64-byte whirlpool digest. </returns>
-        public static byte[] GetWhirlpoolDigest(ByteBuffer buf)
+        public static byte[] GetWhirlpoolDigest(this ByteBuffer buf)
         {
             var bytes = new byte[buf.limit()];
             buf.get(bytes);
@@ -141,7 +141,7 @@ namespace OpenRSS.Utility
         /// </summary>
         /// <param name="buffer"> The buffer. </param>
         /// <returns> The string. </returns>
-        public static string ToString(ByteBuffer buffer)
+        public static string ToString(this ByteBuffer buffer)
         {
             var builder = new StringBuilder("[");
             for (var i = 0; i < buffer.limit(); i++)
