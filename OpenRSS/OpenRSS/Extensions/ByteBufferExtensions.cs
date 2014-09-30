@@ -10,7 +10,7 @@ using OpenRSS.Utility.Cryptography;
 
 using StringBuilder = System.Text.StringBuilder;
 
-namespace OpenRSS.Utility
+namespace OpenRSS.Extensions
 {
     /// <summary>
     ///     Contains <seealso cref="ByteBuffer" />-related utility methods.

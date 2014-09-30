@@ -132,7 +132,7 @@
     <Compile Include="Cache\Sector.cs" />
     <Compile Include="Cache\Sprite\Sprite.cs" />
     <Compile Include="Utility\Compression\CompressionUtils.cs" />
-    <Compile Include="Utility\ByteBufferUtils.cs" />
+    <Compile Include="Extensions\ByteBufferExtensions.cs" />
     <Compile Include="Utility\Cryptography\Djb2.cs" />
     <Compile Include="Utility\Cryptography\Rsa.cs" />
     <Compile Include="Utility\Cryptography\Whirlpool.cs" />

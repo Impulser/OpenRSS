@@ -5,6 +5,7 @@ using java.nio;
 using java.text;
 using java.util;
 
+using OpenRSS.Extensions;
 using OpenRSS.Utility;
 
 namespace OpenRSS.Cache.Definition
@@ -116,7 +117,7 @@ namespace OpenRSS.Cache.Definition
                 }
                 else if (opcode == 2)
                 {
-                    def.name = ByteBufferUtils.GetJagexString(buffer);
+                    def.name = ByteBufferExtensions.GetJagexString(buffer);
                 }
                 else if (opcode == 4)
                 {
@@ -178,11 +179,11 @@ namespace OpenRSS.Cache.Definition
                 }
                 else if (opcode >= 30 && opcode < 35)
                 {
-                    def.groundOptions[opcode - 30] = ByteBufferUtils.GetJagexString(buffer);
+                    def.groundOptions[opcode - 30] = buffer.GetJagexString();
                 }
                 else if (opcode >= 35 && opcode < 40)
                 {
-                    def.inventoryOptions[opcode - 35] = ByteBufferUtils.GetJagexString(buffer);
+                    def.inventoryOptions[opcode - 35] = buffer.GetJagexString();
                 }
                 else if (opcode == 40)
                 {
@@ -346,8 +347,8 @@ namespace OpenRSS.Cache.Definition
                     for (var index = 0; index < length; index++)
                     {
                         var stringInstance = buffer.get() == 1;
-                        var key = ByteBufferUtils.GetTriByte(buffer);
-                        var value = stringInstance ? (object) ByteBufferUtils.GetJagexString(buffer) : buffer.getInt();
+                        var key = ByteBufferExtensions.GetTriByte(buffer);
+                        var value = stringInstance ? (object) ByteBufferExtensions.GetJagexString(buffer) : buffer.getInt();
                     }
                 }
             }

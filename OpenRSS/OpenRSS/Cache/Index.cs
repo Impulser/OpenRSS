@@ -7,6 +7,7 @@ using java.nio;
 using java.text;
 using java.util;
 
+using OpenRSS.Extensions;
 using OpenRSS.Utility;
 
 namespace OpenRSS.Cache
@@ -56,8 +57,8 @@ namespace OpenRSS.Cache
                 throw new ArgumentException();
             }
 
-            var size = ByteBufferUtils.GetTriByte(buf);
-            var sector = ByteBufferUtils.GetTriByte(buf);
+            var size = ByteBufferExtensions.GetTriByte(buf);
+            var sector = ByteBufferExtensions.GetTriByte(buf);
             return new Index(size, sector);
         }
 
@@ -86,8 +87,8 @@ namespace OpenRSS.Cache
         public ByteBuffer Encode()
         {
             var buf = ByteBuffer.allocate(SIZE);
-            ByteBufferUtils.PutTriByte(buf, size);
-            ByteBufferUtils.PutTriByte(buf, sector);
+            ByteBufferExtensions.PutTriByte(buf, size);
+            ByteBufferExtensions.PutTriByte(buf, sector);
             return (ByteBuffer) buf.flip();
         }
     }

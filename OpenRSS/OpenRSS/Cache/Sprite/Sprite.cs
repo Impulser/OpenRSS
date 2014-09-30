@@ -9,6 +9,7 @@ using java.nio;
 using java.text;
 using java.util;
 
+using OpenRSS.Extensions;
 using OpenRSS.Utility;
 
 namespace OpenRSS.Cache.sprite
@@ -123,7 +124,7 @@ namespace OpenRSS.Cache.sprite
             palette[0] = 0; // transparent colour (black)
             for (var index = 1; index < palette.Length; index++)
             {
-                palette[index] = ByteBufferUtils.GetTriByte(buffer);
+                palette[index] = ByteBufferExtensions.GetTriByte(buffer);
                 if (palette[index] == 0)
                 {
                     palette[index] = 1;

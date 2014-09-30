@@ -7,6 +7,7 @@ using java.nio;
 using java.text;
 using java.util;
 
+using OpenRSS.Extensions;
 using OpenRSS.Utility;
 
 namespace OpenRSS.Cache
@@ -92,7 +93,7 @@ namespace OpenRSS.Cache
 
             var id = buf.getShort() & 0xFFFF;
             var chunk = buf.getShort() & 0xFFFF;
-            var nextSector = ByteBufferUtils.GetTriByte(buf);
+            var nextSector = ByteBufferExtensions.GetTriByte(buf);
             var type = buf.get() & 0xFF;
             var data = new byte[DATA_SIZE];
             buf.get(data);
@@ -155,7 +156,7 @@ namespace OpenRSS.Cache
 
             buf.putShort((short) id);
             buf.putShort((short) chunk);
-            ByteBufferUtils.PutTriByte(buf, nextSector);
+            ByteBufferExtensions.PutTriByte(buf, nextSector);
             buf.put((byte) type);
             buf.put(data);
 

@@ -6,6 +6,7 @@ using java.text;
 using java.util;
 using java.util.zip;
 
+using OpenRSS.Extensions;
 using OpenRSS.JavaAPI;
 using OpenRSS.Utility;
 using OpenRSS.Utility.Cryptography;
@@ -93,10 +94,10 @@ namespace OpenRSS.Cache
                 {
                     var @ref = ReferenceTable.Decode(Container.Decode(buf)
                                                               .GetData());
-                    crc = ByteBufferUtils.GetCrcChecksum(buf);
+                    crc = ByteBufferExtensions.GetCrcChecksum(buf);
                     version = @ref.GetVersion();
                     buf.position(0);
-                    whirlpool = ByteBufferUtils.GetWhirlpoolDigest(buf);
+                    whirlpool = ByteBufferExtensions.GetWhirlpoolDigest(buf);
                 }
 
                 table.SetEntry(i, new ChecksumTable.Entry(crc, version, whirlpool));
