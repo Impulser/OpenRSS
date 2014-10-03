@@ -12,6 +12,8 @@ using java.util;
 using OpenRSS.Extensions;
 using OpenRSS.Utility;
 
+using VMUtilities.Collections;
+
 namespace OpenRSS.Cache.sprite
 {
     /// <summary>
@@ -147,7 +149,7 @@ namespace OpenRSS.Cache.sprite
                 /* allocate an array for the palette indices */
                 //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
                 //ORIGINAL LINE: int[][] indices = new int[subWidth][subHeight];
-                var indices = ArrayUtilities.ReturnRectangularArray<int>(subWidth, subHeight);
+                var indices = ArrayUtil.ReturnRectangularArray<int>(subWidth, subHeight);
 
                 /* read the flags so we know whether to read horizontally or vertically */
                 var flags = buffer.get() & 0xFF;

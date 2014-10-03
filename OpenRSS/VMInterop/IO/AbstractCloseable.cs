@@ -1,11 +1,16 @@
-﻿using java.io;
-using java.lang;
-using java.net;
-using java.nio;
-using java.text;
-using java.util;
+﻿using System;
+using Console = System.Console;
 
-namespace OpenRSS.JavaAPI
+using java.io;
+using java.nio;
+using java.util;
+using java.math;
+using java.text;
+using java.util.zip;
+
+
+
+namespace VMUtilities.IO
 {
     public abstract class AbstractCloseable : Closeable
     {

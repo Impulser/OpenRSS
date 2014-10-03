@@ -1,13 +1,14 @@
 using java.io;
 using java.lang;
-using java.net;
+using java.math;
 using java.nio;
 using java.text;
 using java.util;
+using java.util.zip;
 
-namespace OpenRSS.Utility
+namespace VMUtilities.Collections
 {
-    public static class ArrayUtilities
+    public static class ArrayUtil
     {
         public static T[][] ReturnRectangularArray<T>(int Size1, int Size2)
             where T : struct

@@ -7,6 +7,8 @@ using java.util;
 
 using OpenRSS.Utility;
 
+using VMUtilities.Collections;
+
 namespace OpenRSS.Cache
 {
     /// <summary>
@@ -49,7 +51,7 @@ namespace OpenRSS.Cache
             /* read the sizes of the child entries and individual chunks */
             //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
             //ORIGINAL LINE: int[][] chunkSizes = new int[chunks][size];
-            var chunkSizes = ArrayUtilities.ReturnRectangularArray<int>(chunks, size);
+            var chunkSizes = ArrayUtil.ReturnRectangularArray<int>(chunks, size);
             var sizes = new int[size];
             buffer.position(buffer.limit() - 1 - chunks * size * 4);
             for (var chunk = 0; chunk < chunks; chunk++)
