@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AFA0D36F-F8C5-4897-8D36-11D155D3E144}</ProjectGuid>
+    <ProjectGuid>{9241D02F-3C25-443C-8BE9-2F72ADE723EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRSS</RootNamespace>
-    <AssemblyName>OpenRSS</AssemblyName>
+    <RootNamespace>RSUtilities</RootNamespace>
+    <AssemblyName>RSUtilities</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -105,10 +105,6 @@
     <Reference Include="IKVM.Runtime.JNI">
       <HintPath>..\packages\IKVM.7.4.5196.0\lib\IKVM.Runtime.JNI.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -118,26 +114,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations\Annotations.cs" />
+    <Compile Include="Collections\ArrayUtil.cs" />
+    <Compile Include="Tools\Rand.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\ByteBufferExtensions.cs" />
+    <Compile Include="Tools\AbstractCloseable.cs" />
+    <Compile Include="IO\InputStream.cs" />
+    <Compile Include="IO\OutputStream.cs" />
+    <Compile Include="IO\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Cache\Archive.cs" />
-    <Compile Include="Cache\Cache.cs" />
-    <Compile Include="Cache\ChecksumTable.cs" />
-    <Compile Include="Cache\Container.cs" />
-    <Compile Include="Cache\Definition\ItemDefinition.cs" />
-    <Compile Include="Cache\FileStore.cs" />
-    <Compile Include="Cache\Index.cs" />
-    <Compile Include="Cache\ReferenceTable.cs" />
-    <Compile Include="Cache\Sector.cs" />
-    <Compile Include="Cache\Sprite\Sprite.cs" />
+    <Compile Include="Compression\BZip2\BZip2Constants.cs" />
+    <Compile Include="Compression\BZip2\CBZip2InputStream.cs" />
+    <Compile Include="Compression\BZip2\CBZip2OutputStream.cs" />
+    <Compile Include="Compression\BZip2\CRC.cs" />
+    <Compile Include="Compression\CompressionUtils.cs" />
+    <Compile Include="Cryptography\Djb2.cs" />
+    <Compile Include="Cryptography\Rsa.cs" />
+    <Compile Include="Cryptography\Whirlpool.cs" />
+    <Compile Include="Cryptography\Xtea.cs" />
+    <Compile Include="Tools\FileChannelUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RSUtilities\RSUtilities.csproj">
-      <Project>{9241D02F-3C25-443C-8BE9-2F72ADE723EE}</Project>
-      <Name>RSUtilities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

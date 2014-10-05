@@ -8,7 +8,7 @@ using java.text;
 using java.util;
 
 using OpenRSS.Extensions;
-using OpenRSS.Utility;
+using RSUtilities;
 
 namespace OpenRSS.Cache
 {

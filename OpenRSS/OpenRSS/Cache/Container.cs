@@ -5,7 +5,7 @@ using java.nio;
 using java.text;
 using java.util;
 
-using OpenRSS.Utility.Compression;
+using RSUtilities.Compression;
 
 namespace OpenRSS.Cache
 {

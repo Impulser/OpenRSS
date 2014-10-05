@@ -7,9 +7,8 @@ using java.util;
 using java.util.zip;
 
 using OpenRSS.Extensions;
-using OpenRSS.JavaAPI;
-using OpenRSS.Utility;
-using OpenRSS.Utility.Cryptography;
+using RSUtilities.Cryptography;
+using RSUtilities.Tools;
 
 namespace OpenRSS.Cache
 {

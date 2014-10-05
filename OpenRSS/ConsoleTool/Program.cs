@@ -16,7 +16,7 @@ namespace ConsoleTool
         static void Main(string[] args)
         {
             var fileStore = FileStore.Open(@"C:\Users\Alex\.Hydrascape32\runescape");
-            fileStore.GetFileCount()
+            //fileStore.GetFileCount()
             File.WriteAllText("C:/Cache.json", JsonConvert.SerializeObject(fileStore, Formatting.Indented));
             Console.ReadLine();
         }

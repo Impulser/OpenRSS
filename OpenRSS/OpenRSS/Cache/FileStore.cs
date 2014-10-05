@@ -9,9 +9,8 @@ using java.nio.channels;
 using java.text;
 using java.util;
 
-using OpenRSS.Utility;
-
-using VMUtilities.IO;
+using RSUtilities;
+using RSUtilities.Tools;
 
 namespace OpenRSS.Cache
 {

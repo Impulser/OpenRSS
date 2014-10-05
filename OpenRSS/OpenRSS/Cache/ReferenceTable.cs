@@ -9,7 +9,7 @@ using java.nio;
 using java.text;
 using java.util;
 
-using OpenRSS.Utility.Cryptography;
+using RSUtilities.Cryptography;
 
 namespace OpenRSS.Cache
 {
